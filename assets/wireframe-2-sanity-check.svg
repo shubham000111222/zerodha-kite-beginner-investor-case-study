@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 580" width="100%" height="100%">
+  <rect x="6" y="6" width="328" height="568" rx="28" fill="#cbd5e1" stroke="#1e293b" stroke-width="5"/>
+  
+  <!-- Dimmed Background -->
+  <text x="24" y="44" fill="#64748b" font-family="sans-serif" font-size="15" font-weight="bold">&#8592; TATASTEEL  •  ₹150.00</text>
+  <text x="24" y="72" fill="#64748b" font-family="sans-serif" font-size="12">(Order Pad dimmed on Swipe to Buy)</text>
+
+  <!-- Bottom Sheet Modal -->
+  <rect x="9" y="150" width="322" height="421" rx="22" fill="#ffffff"/>
+  <rect x="135" y="160" width="70" height="5" rx="2.5" fill="#cbd5e1"/>
+
+  <text x="24" y="192" fill="#b45309" font-family="sans-serif" font-size="15" font-weight="bold">Quick Sanity Check (1 of 3)</text>
+  <text x="24" y="216" fill="#334155" font-family="sans-serif" font-size="12">You selected INTRADAY (MIS) for 2 shares:</text>
+
+  <!-- Warning Box -->
+  <rect x="22" y="230" width="296" height="136" rx="8" fill="#fffbeb" stroke="#fde68a"/>
+  <text x="34" y="252" fill="#78350f" font-family="sans-serif" font-size="11.5" font-weight="bold">1. 5x Leverage Exposure:</text>
+  <text x="34" y="270" fill="#92400e" font-family="sans-serif" font-size="11">You pay ₹60 margin upfront, but take price</text>
+  <text x="34" y="286" fill="#92400e" font-family="sans-serif" font-size="11">risk on ₹300 worth of shares.</text>
+
+  <text x="34" y="314" fill="#78350f" font-family="sans-serif" font-size="11.5" font-weight="bold">2. 3:20 PM Auto-Sell Penalty:</text>
+  <text x="34" y="332" fill="#92400e" font-family="sans-serif" font-size="11">If you don't sell by 3:20 PM today, system</text>
+  <text x="34" y="348" fill="#92400e" font-family="sans-serif" font-size="11">auto-squares off for a ₹50 + 18% GST fee.</text>
+
+  <text x="24" y="392" fill="#0f172a" font-family="sans-serif" font-size="12" font-weight="bold">Want to hold this stock for more than 1 day?</text>
+
+  <!-- Primary Safe Button -->
+  <rect x="22" y="406" width="296" height="44" rx="8" fill="#387ed1"/>
+  <text x="42" y="433" fill="#ffffff" font-family="sans-serif" font-size="12.5" font-weight="bold">Switch to Longterm (CNC) — Pay ₹300</text>
+
+  <!-- Secondary Freedom Button -->
+  <rect x="22" y="460" width="296" height="40" rx="8" fill="#e2e8f0"/>
+  <text x="64" y="485" fill="#334155" font-family="sans-serif" font-size="12" font-weight="bold">Continue with Intraday (MIS) anyway</text>
+
+  <!-- Opt out checkbox -->
+  <rect x="82" y="518" width="12" height="12" rx="2" fill="none" stroke="#64748b"/>
+  <text x="100" y="528" fill="#64748b" font-family="sans-serif" font-size="11">Don't show this check again</text>
+</svg>

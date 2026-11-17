@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 260" width="100%" height="100%">
+  <rect width="960" height="260" rx="14" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="24" y="36" fill="#0f172a" font-family="sans-serif" font-size="18" font-weight="bold">CURRENT BEGINNER JOURNEY MAP: Where Excitement Turns Into Early Churn</text>
+  
+  <!-- Step 1 -->
+  <rect x="20" y="56" width="142" height="180" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+  <rect x="20" y="56" width="142" height="8" rx="4" fill="#387ed1"/>
+  <text x="30" y="84" fill="#0f172a" font-family="sans-serif" font-size="13" font-weight="bold">1. Onboarding</text>
+  <text x="30" y="108" fill="#475569" font-family="sans-serif" font-size="12">Opens Zerodha</text>
+  <text x="30" y="124" fill="#475569" font-family="sans-serif" font-size="12">account via</text>
+  <text x="30" y="140" fill="#475569" font-family="sans-serif" font-size="12">word-of-mouth.</text>
+  <text x="30" y="216" fill="#16a34a" font-family="sans-serif" font-size="12" font-weight="bold">Mood: Excited</text>
+
+  <!-- Step 2 -->
+  <rect x="175" y="56" width="142" height="180" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+  <rect x="175" y="56" width="142" height="8" rx="4" fill="#387ed1"/>
+  <text x="185" y="84" fill="#0f172a" font-family="sans-serif" font-size="13" font-weight="bold">2. Watchlist</text>
+  <text x="185" y="108" fill="#475569" font-family="sans-serif" font-size="12">Sees blank list &amp;</text>
+  <text x="185" y="124" fill="#475569" font-family="sans-serif" font-size="12">cryptic tickers.</text>
+  <text x="185" y="140" fill="#475569" font-family="sans-serif" font-size="12">Picks known stock.</text>
+  <text x="185" y="216" fill="#387ed1" font-family="sans-serif" font-size="12" font-weight="bold">Mood: Curious</text>
+
+  <!-- Step 3 -->
+  <rect x="330" y="56" width="142" height="180" rx="8" fill="#fefce8" stroke="#fde047"/>
+  <rect x="330" y="56" width="142" height="8" rx="4" fill="#eab308"/>
+  <text x="340" y="84" fill="#854d0e" font-family="sans-serif" font-size="13" font-weight="bold">3. Jargon Trap</text>
+  <text x="340" y="108" fill="#713f12" font-family="sans-serif" font-size="12">Opens Order Pad.</text>
+  <text x="340" y="124" fill="#713f12" font-family="sans-serif" font-size="12">Confused by MIS,</text>
+  <text x="340" y="140" fill="#713f12" font-family="sans-serif" font-size="12">CNC, SL-M terms.</text>
+  <text x="340" y="216" fill="#ca8a04" font-family="sans-serif" font-size="12" font-weight="bold">Mood: Confused</text>
+
+  <!-- Step 4 -->
+  <rect x="485" y="56" width="142" height="180" rx="8" fill="#fefce8" stroke="#fde047"/>
+  <rect x="485" y="56" width="142" height="8" rx="4" fill="#f59e0b"/>
+  <text x="495" y="84" fill="#854d0e" font-family="sans-serif" font-size="13" font-weight="bold">4. 5x Margin Trap</text>
+  <text x="495" y="108" fill="#713f12" font-family="sans-serif" font-size="12">Picks MIS because</text>
+  <text x="495" y="124" fill="#713f12" font-family="sans-serif" font-size="12">margin is 5x lower.</text>
+  <text x="495" y="140" fill="#713f12" font-family="sans-serif" font-size="12">Zero Varsity links.</text>
+  <text x="495" y="216" fill="#d97706" font-family="sans-serif" font-size="12" font-weight="bold">Mood: Misled</text>
+
+  <!-- Step 5 -->
+  <rect x="640" y="56" width="142" height="180" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+  <rect x="640" y="56" width="142" height="8" rx="4" fill="#64748b"/>
+  <text x="650" y="84" fill="#0f172a" font-family="sans-serif" font-size="13" font-weight="bold">5. Execution</text>
+  <text x="650" y="108" fill="#475569" font-family="sans-serif" font-size="12">Swipes to Buy</text>
+  <text x="650" y="124" fill="#475569" font-family="sans-serif" font-size="12">Market order,</text>
+  <text x="650" y="140" fill="#475569" font-family="sans-serif" font-size="12">unaware of cutoff.</text>
+  <text x="650" y="216" fill="#475569" font-family="sans-serif" font-size="12" font-weight="bold">Mood: Unaware</text>
+
+  <!-- Step 6 -->
+  <rect x="795" y="56" width="145" height="180" rx="8" fill="#fef2f2" stroke="#fca5a5"/>
+  <rect x="795" y="56" width="145" height="8" rx="4" fill="#ef4444"/>
+  <text x="805" y="84" fill="#991b1b" font-family="sans-serif" font-size="13" font-weight="bold">6. 3:20 PM Shock</text>
+  <text x="805" y="108" fill="#7f1d1d" font-family="sans-serif" font-size="12">Auto-squared off</text>
+  <text x="805" y="124" fill="#7f1d1d" font-family="sans-serif" font-size="12">at 3:20 PM with</text>
+  <text x="805" y="140" fill="#7f1d1d" font-family="sans-serif" font-size="12">₹50+GST penalty!</text>
+  <text x="805" y="216" fill="#dc2626" font-family="sans-serif" font-size="12" font-weight="bold">Mood: Churned</text>
+</svg>

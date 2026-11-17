@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 300" width="100%" height="100%">
+  <rect width="900" height="300" rx="14" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <rect width="900" height="54" rx="14" fill="#1e293b"/>
+  <text x="24" y="34" fill="#ffffff" font-family="sans-serif" font-size="18" font-weight="bold">TARGET PERSONA: "First-Job Rohan" (Age 22, Bengaluru — CS Grad / Junior Engineer)</text>
+  
+  <!-- Left Card -->
+  <rect x="20" y="72" width="265" height="208" rx="10" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="36" y="100" fill="#387ed1" font-family="sans-serif" font-size="15" font-weight="bold">PROFILE &amp; CAPITAL</text>
+  <text x="36" y="128" fill="#334155" font-family="sans-serif" font-size="13">• Age: 22 (First-time investor)</text>
+  <text x="36" y="152" fill="#334155" font-family="sans-serif" font-size="13">• Savings: ₹5,000–₹10,000/mo</text>
+  <text x="36" y="176" fill="#334155" font-family="sans-serif" font-size="13">• Platform: Kite Mobile App</text>
+  <text x="36" y="200" fill="#334155" font-family="sans-serif" font-size="13">• Why Zerodha: Word-of-mouth</text>
+  <text x="46" y="218" fill="#64748b" font-family="sans-serif" font-size="12">trust from college seniors/family</text>
+  <rect x="36" y="234" width="233" height="30" rx="6" fill="#eff6ff"/>
+  <text x="46" y="254" fill="#1d4ed8" font-family="sans-serif" font-size="12" font-weight="bold">Goal: Compound wealth safely</text>
+
+  <!-- Middle Card -->
+  <rect x="305" y="72" width="275" height="208" rx="10" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="321" y="100" fill="#dc2626" font-family="sans-serif" font-size="15" font-weight="bold">KEY FRUSTRATIONS</text>
+  <text x="321" y="128" fill="#334155" font-family="sans-serif" font-size="13">• Confused by MIS, CNC, SL-M</text>
+  <text x="321" y="152" fill="#334155" font-family="sans-serif" font-size="13">• Mistakes 5x MIS margin for a</text>
+  <text x="331" y="170" fill="#64748b" font-family="sans-serif" font-size="12">"cheaper stock discount"</text>
+  <text x="321" y="196" fill="#334155" font-family="sans-serif" font-size="13">• Hit with ₹50+GST penalty at</text>
+  <text x="331" y="214" fill="#64748b" font-family="sans-serif" font-size="12">3:20 PM auto-square-off</text>
+  <text x="321" y="240" fill="#334155" font-family="sans-serif" font-size="13">• ₹15.93 DP charges eat small</text>
+  <text x="331" y="258" fill="#64748b" font-family="sans-serif" font-size="12">₹300–₹500 trade profits</text>
+
+  <!-- Right Card -->
+  <rect x="600" y="72" width="280" height="208" rx="10" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="616" y="100" fill="#16a34a" font-family="sans-serif" font-size="15" font-weight="bold">TOP 3 JOBS-TO-BE-DONE</text>
+  <text x="616" y="128" fill="#0f172a" font-family="sans-serif" font-size="13" font-weight="bold">1. Execution Confidence:</text>
+  <text x="616" y="146" fill="#475569" font-family="sans-serif" font-size="12">Know exact order rules &amp; charges</text>
+  <text x="616" y="174" fill="#0f172a" font-family="sans-serif" font-size="13" font-weight="bold">2. Learning by Doing:</text>
+  <text x="616" y="192" fill="#475569" font-family="sans-serif" font-size="12">Plain-English Varsity help in-app</text>
+  <text x="616" y="220" fill="#0f172a" font-family="sans-serif" font-size="13" font-weight="bold">3. Safe Exploration:</text>
+  <text x="616" y="238" fill="#475569" font-family="sans-serif" font-size="12">Guardrails against accidental 5x</text>
+  <text x="616" y="254" fill="#475569" font-family="sans-serif" font-size="12">intraday leverage bets</text>
+</svg>

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 580" width="100%" height="100%">
+  <rect x="6" y="6" width="328" height="568" rx="28" fill="#cbd5e1" stroke="#1e293b" stroke-width="5"/>
+  
+  <!-- Dimmed Background -->
+  <text x="24" y="44" fill="#64748b" font-family="sans-serif" font-size="15" font-weight="bold">&#8592; TATASTEEL  •  ₹150.00</text>
+  <text x="24" y="72" fill="#64748b" font-family="sans-serif" font-size="12">(User tapped (?) next to Order Type)</text>
+
+  <!-- Bottom Drawer -->
+  <rect x="9" y="180" width="322" height="391" rx="22" fill="#ffffff"/>
+  <rect x="135" y="190" width="70" height="5" rx="2.5" fill="#cbd5e1"/>
+
+  <text x="24" y="224" fill="#1d4ed8" font-family="sans-serif" font-size="14" font-weight="bold">Varsity Quick Guide (15-sec read)</text>
+  <text x="272" y="224" fill="#64748b" font-family="sans-serif" font-size="12">[Close X]</text>
+  <line x1="22" y1="238" x2="318" y2="238" stroke="#e2e8f0"/>
+
+  <text x="24" y="264" fill="#0f172a" font-family="sans-serif" font-size="14" font-weight="bold">Market Order vs. Limit Order</text>
+
+  <!-- Card 1 -->
+  <rect x="22" y="280" width="296" height="92" rx="8" fill="#f8fafc" stroke="#cbd5e1"/>
+  <text x="34" y="302" fill="#0f172a" font-family="sans-serif" font-size="12" font-weight="bold">• Market Order (Fast, Higher Risk):</text>
+  <text x="34" y="322" fill="#475569" font-family="sans-serif" font-size="11">Buys immediately at whatever price a seller</text>
+  <text x="34" y="338" fill="#475569" font-family="sans-serif" font-size="11">is asking. Risky on volatile stocks if the</text>
+  <text x="34" y="354" fill="#475569" font-family="sans-serif" font-size="11">price jumps suddenly (slippage).</text>
+
+  <!-- Card 2 -->
+  <rect x="22" y="384" width="296" height="92" rx="8" fill="#f0fdf4" stroke="#bbf7d0"/>
+  <text x="34" y="406" fill="#166534" font-family="sans-serif" font-size="12" font-weight="bold">• Limit Order (Price Protected):</text>
+  <text x="34" y="426" fill="#15803d" font-family="sans-serif" font-size="11">You set the maximum price you are willing</text>
+  <text x="34" y="442" fill="#15803d" font-family="sans-serif" font-size="11">to pay. The order only executes at your</text>
+  <text x="34" y="458" fill="#15803d" font-family="sans-serif" font-size="11">chosen price or better.</text>
+
+  <!-- Varsity CTA -->
+  <rect x="22" y="494" width="296" height="42" rx="8" fill="#eff6ff" stroke="#bfdbfe"/>
+  <text x="48" y="520" fill="#1d4ed8" font-family="sans-serif" font-size="12" font-weight="bold">Save Full Chapter to Varsity App &#8594;</text>
+</svg>

@@ -65,10 +65,10 @@ However, when young beginners join Zerodha for its brand trust, they land in a c
   2. *Learning by Doing:* Understand terms like `CNC`, `MIS`, and `SL` in plain English without leaving the order screen.
   3. *Safe Exploration:* Avoid wiping out my small capital due to hidden leverage or cutoff rules.
 
-![User Persona Placeholder](./assets/persona-rohan.png)
+![User Persona Placeholder](./assets/persona-rohan.svg)
 *Caption: Target Persona — First-Job Rohan (18–25 Beginner Segment).*
 
-![Beginner Journey Map Placeholder](./assets/journey-map.png)
+![Beginner Journey Map Placeholder](./assets/journey-map.svg)
 *Caption: Current 6-step beginner journey showing where excitement turns into loss shock at the Order Pad (Step 4) and 3:20 PM Auto Square-Off (Step 6).*
 
 ---
@@ -112,7 +112,7 @@ I mapped 6 core pain points into "How Might We" (HMW) opportunities and scored t
 ## 7. Wireframes
 | Screen 1: Adaptive Order Pad | Screen 2: Pre-Trade Sanity Check | Screen 3: Inline Varsity Bite |
 | :---: | :---: | :---: |
-| ![Screen 1 Placeholder](./assets/wireframe-1-order-pad.png) | ![Screen 2 Placeholder](./assets/wireframe-2-sanity-check.png) | ![Screen 3 Placeholder](./assets/wireframe-3-varsity-bite.png) |
+| ![Screen 1 Placeholder](./assets/wireframe-1-order-pad.svg) | ![Screen 2 Placeholder](./assets/wireframe-2-sanity-check.svg) | ![Screen 3 Placeholder](./assets/wireframe-3-varsity-bite.svg) |
 | *Plain-English micro-banners for `<25 trades` + 1-tap pro opt-out.* | *Intercepts first 3 `MIS` trades with a 1-tap switch to `CNC`.* | *15-sec native bottom drawer explaining order types.* |
 
 *(Full text wireframes and screen specs in [./design/wireframe-specs.md](./design/wireframe-specs.md))*
