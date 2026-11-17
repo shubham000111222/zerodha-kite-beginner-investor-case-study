@@ -32,7 +32,7 @@
 * **Device & Ticket Size:** Android vs. iOS; starting capital `< ₹2,000` vs. `> ₹10,000`.
 
 ### Step 4: External vs. Internal Causes
-* **External:** Nifty 50 market correction causing red portfolios ("ostrich effect"), SEBI margin/lot-size rule changes `[SOURCE]`, or competitor zero-brokerage campaigns.
+* **External:** Nifty 50 market correction causing red portfolios ("ostrich effect"), SEBI margin/lot-size rule changes ([Source](https://zerodha.com/charges/)), or competitor zero-brokerage campaigns.
 * **Internal:** UPI payment gateway failures during repeat funding, UI changes, or support delays.
 
 ### Step 5: Ranked Hypotheses & Action Plan

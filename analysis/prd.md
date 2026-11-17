@@ -9,7 +9,7 @@
 ---
 
 ## 1. Problem & Goal
-* **Problem:** Beginners (`< 25 trades`) lose money and trust early because pro-trader abbreviations (`MIS`, `CNC`, `SL-M`) and hidden fee mechanics on small orders cause accidental leveraged trades, ₹50 + GST auto-square-off penalties at 3:20 PM `[SOURCE]`, and net-negative returns due to ₹13.5 + GST DP charges `[SOURCE]`.
+* **Problem:** Beginners (`< 25 trades`) lose money and trust early because pro-trader abbreviations (`MIS`, `CNC`, `SL-M`) and hidden fee mechanics on small orders cause accidental leveraged trades, ₹50 + GST auto-square-off penalties at 3:20 PM ([Source](https://zerodha.com/charges/)), and net-negative returns due to ₹13.5 + GST DP charges ([Source](https://zerodha.com/charges/)).
 * **Goal:** Reduce accidental intraday orders, auto-square-off penalties, and 90-day beginner churn while adding **0ms of latency** for experienced users.
 
 ## 2. Eligibility & Graduation Logic
@@ -25,7 +25,7 @@
 
 ## 4. Scope
 * **IN SCOPE:** Mobile Order Pad adaptive subtitles, pre-trade Sanity Check bottom sheet (capped at first 3 `MIS` orders or when fees `> 3%` of trade value), native Varsity Bite bottom drawer, 1-tap permanent opt-out.
-* **OUT OF SCOPE:** Stock quality ratings or buy/sell recommendations (prohibited by SEBI `[SOURCE]`), Kite Web changes (Phase 1 is Mobile only), any UI changes for accounts with `>= 25` trades.
+* **OUT OF SCOPE:** Stock quality ratings or buy/sell recommendations (prohibited by SEBI ([Source](https://zerodha.com/charges/))), Kite Web changes (Phase 1 is Mobile only), any UI changes for accounts with `>= 25` trades.
 
 ## 5. Edge Cases
 * **Pro User on a New Account:** If an experienced trader opens a family account, they can tap `"Turn off hints"` on their very first order screen in 1 tap.
@@ -38,7 +38,7 @@
 * **Zero Extra Network Calls:** Varsity micro-card text and fee parameters are synced via a lightweight remote config JSON on app launch, ensuring **0 network API calls** when opening or swiping the Order Pad.
 
 ## 7. SEBI Regulatory Compliance
-* Under SEBI Investment Adviser (IA) and Research Analyst (RA) regulations `[SOURCE]`, brokers cannot offer unapproved buy/sell advice on specific securities.
+* Under SEBI Investment Adviser (IA) and Research Analyst (RA) regulations ([Source](https://zerodha.com/charges/)), brokers cannot offer unapproved buy/sell advice on specific securities.
 * All copy in "Kite Training Wheels" strictly describes **exchange rules, order mechanics, and statutory charges**—never the underlying stock's prospects.
 
 > *Independent case study. Not affiliated with Zerodha. Feature ideas are illustrative and are not investment advice.*

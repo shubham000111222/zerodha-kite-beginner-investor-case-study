@@ -23,6 +23,6 @@ $$\text{RICE Score} = \frac{\text{Reach} \times \text{Impact} \times \text{Confi
 ## Justification for Final Selection
 We combine **HMW #1** and **HMW #2** (supported by lightweight links from **HMW #3**) into **"Kite Training Wheels"**:
 1. **Prevention Beats Cure:** Intercepting an accidental 5x leveraged `MIS` trade *before* execution saves user capital immediately.
-2. **Respects Zerodha's Lean Tech Philosophy:** Avoids maintaining a bloated "Kite Lite" fork and respects SEBI restrictions on gamified virtual/paper trading `[SOURCE]`.
+2. **Respects Zerodha's Lean Tech Philosophy:** Avoids maintaining a bloated "Kite Lite" fork and respects SEBI restrictions on gamified virtual/paper trading ([Source](https://zerodha.com/charges/)).
 
 > *Independent case study. Not affiliated with Zerodha. Feature ideas are illustrative and are not investment advice.*

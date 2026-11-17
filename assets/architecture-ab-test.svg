@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 290" width="100%" height="100%">
+  <rect width="960" height="290" rx="14" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  
+  <!-- Left Half: Zero-Latency Client-Side Architecture -->
+  <rect x="18" y="18" width="452" height="254" rx="10" fill="#ffffff" stroke="#cbd5e1"/>
+  <rect x="18" y="18" width="452" height="40" rx="10" fill="#0f172a"/>
+  <text x="34" y="43" fill="#ffffff" font-family="sans-serif" font-size="14" font-weight="bold">💻 CS ARCHITECTURE: 0ms Network Overhead at 9:15 AM</text>
+
+  <rect x="34" y="74" width="124" height="110" rx="8" fill="#eff6ff" stroke="#93c5fd"/>
+  <text x="44" y="96" fill="#1e40af" font-family="sans-serif" font-size="12" font-weight="bold">1. Login Payload</text>
+  <text x="44" y="116" fill="#334155" font-family="sans-serif" font-size="11">Async backend check</text>
+  <text x="44" y="132" fill="#334155" font-family="sans-serif" font-size="11">sets boolean flag:</text>
+  <text x="44" y="152" fill="#1d4ed8" font-family="monospace" font-size="10.5" font-weight="bold">trades &lt; 25: true</text>
+
+  <text x="163" y="132" fill="#64748b" font-family="sans-serif" font-size="16" font-weight="bold">&#8594;</text>
+
+  <rect x="182" y="74" width="124" height="110" rx="8" fill="#f0fdf4" stroke="#86efac"/>
+  <text x="192" y="96" fill="#166534" font-family="sans-serif" font-size="12" font-weight="bold">2. Local Cache</text>
+  <text x="192" y="116" fill="#334155" font-family="sans-serif" font-size="11">Flag &amp; Varsity JSON</text>
+  <text x="192" y="132" fill="#334155" font-family="sans-serif" font-size="11">cached on device:</text>
+  <text x="192" y="152" fill="#15803d" font-family="monospace" font-size="10.5" font-weight="bold">SharedPrefs/SQLite</text>
+
+  <text x="311" y="132" fill="#64748b" font-family="sans-serif" font-size="16" font-weight="bold">&#8594;</text>
+
+  <rect x="330" y="74" width="124" height="110" rx="8" fill="#fefce8" stroke="#fde047"/>
+  <text x="340" y="96" fill="#854d0e" font-family="sans-serif" font-size="12" font-weight="bold">3. Order Pad CPU</text>
+  <text x="340" y="116" fill="#334155" font-family="sans-serif" font-size="11">Deterministic DP &amp;</text>
+  <text x="340" y="132" fill="#334155" font-family="sans-serif" font-size="11">fee math runs in:</text>
+  <text x="340" y="152" fill="#b45309" font-family="monospace" font-size="11" font-weight="bold">&lt; 0.2ms (0 APIs)</text>
+
+  <rect x="34" y="202" width="420" height="52" rx="6" fill="#f1f5f9"/>
+  <text x="46" y="223" fill="#0f172a" font-family="sans-serif" font-size="12" font-weight="bold">Why this matters for Kite Engineering:</text>
+  <text x="46" y="241" fill="#475569" font-family="sans-serif" font-size="11.5">Zero extra backendOMS calls during order placement = 0ms p99 latency impact.</text>
+
+  <!-- Right Half: 50/50 Concurrent A/B Test Funnel -->
+  <rect x="490" y="18" width="452" height="254" rx="10" fill="#ffffff" stroke="#cbd5e1"/>
+  <rect x="490" y="18" width="452" height="40" rx="10" fill="#387ed1"/>
+  <text x="506" y="43" fill="#ffffff" font-family="sans-serif" font-size="14" font-weight="bold">🧪 EXPERIMENT: 50/50 Concurrent A/B Split (~19,000 Users)</text>
+
+  <rect x="506" y="76" width="126" height="110" rx="8" fill="#f8fafc" stroke="#94a3b8"/>
+  <text x="516" y="98" fill="#0f172a" font-family="sans-serif" font-size="12" font-weight="bold">Eligible Cohort</text>
+  <text x="516" y="118" fill="#475569" font-family="sans-serif" font-size="11">New users placing</text>
+  <text x="516" y="134" fill="#475569" font-family="sans-serif" font-size="11">1st mobile trade.</text>
+  <text x="516" y="154" fill="#387ed1" font-family="sans-serif" font-size="11" font-weight="bold">Stratified by IPO</text>
+  <text x="516" y="168" fill="#387ed1" font-family="sans-serif" font-size="11" font-weight="bold">vs. Equity intent</text>
+
+  <text x="638" y="132" fill="#64748b" font-family="sans-serif" font-size="16" font-weight="bold">&#8594;</text>
+
+  <rect x="658" y="74" width="132" height="50" rx="6" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="668" y="94" fill="#334155" font-family="sans-serif" font-size="11.5" font-weight="bold">Control (50%): 9.5K</text>
+  <text x="668" y="112" fill="#64748b" font-family="sans-serif" font-size="10.5">Standard Order Pad</text>
+
+  <rect x="658" y="136" width="132" height="50" rx="6" fill="#dcfce7" stroke="#86efac"/>
+  <text x="668" y="156" fill="#166534" font-family="sans-serif" font-size="11.5" font-weight="bold">Variant (50%): 9.5K</text>
+  <text x="668" y="174" fill="#15803d" font-family="sans-serif" font-size="10.5">Kite Training Wheels</text>
+
+  <text x="796" y="132" fill="#64748b" font-family="sans-serif" font-size="16" font-weight="bold">&#8594;</text>
+
+  <rect x="814" y="76" width="112" height="110" rx="8" fill="#eff6ff" stroke="#93c5fd"/>
+  <text x="822" y="98" fill="#1e40af" font-family="sans-serif" font-size="11.5" font-weight="bold">Decision Rule</text>
+  <text x="822" y="118" fill="#334155" font-family="sans-serif" font-size="10.5">• +5% lift in 30d</text>
+  <text x="822" y="132" fill="#334155" font-family="sans-serif" font-size="10.5">  healthy trades</text>
+  <text x="822" y="150" fill="#16a34a" font-family="sans-serif" font-size="10.5" font-weight="bold">• -25% auto</text>
+  <text x="822" y="164" fill="#16a34a" font-family="sans-serif" font-size="10.5" font-weight="bold">  square-offs</text>
+
+  <rect x="506" y="202" width="420" height="52" rx="6" fill="#f1f5f9"/>
+  <text x="518" y="223" fill="#0f172a" font-family="sans-serif" font-size="12" font-weight="bold">Controlling for Stock Market Volatility:</text>
+  <text x="518" y="241" fill="#475569" font-family="sans-serif" font-size="11.5">Concurrent testing ensures Nifty rallies/crashes affect both buckets identically.</text>
+</svg>
