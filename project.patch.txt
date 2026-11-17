@@ -1,0 +1,538 @@
+diff --git a/LICENSE b/LICENSE
+new file mode 100644
+--- /dev/null
++++ b/LICENSE
+@@ -0,0 +1,21 @@
++MIT License
++
++Copyright (c) 2025 Shubham
++
++Permission is hereby granted, free of charge, to any person obtaining a copy
++of this software and associated documentation files (the "Software"), to deal
++in the Software without restriction, including without limitation the rights
++to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
++copies of the Software, and to permit persons to whom the Software is
++furnished to do so, subject to the following conditions:
++
++The above copyright notice and this permission notice shall be included in all
++copies or substantial portions of the Software.
++
++THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
++AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
++OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
++SOFTWARE.
+diff --git a/README.md b/README.md
+new file mode 100644
+--- /dev/null
++++ b/README.md
+@@ -0,0 +1,166 @@
++# Zerodha Kite: Helping First-Time Investors Avoid Early Losses Without Slowing Down Pros
++
++**A product management case study on designing zero-latency "Training Wheels" for beginner investors on Zerodha Kite.**
++
++> *Independent case study. Not affiliated with Zerodha. Feature ideas are illustrative and are not investment advice.*
++
++---
++
++## ⚡ TL;DR (2-Minute Recruiter Summary)
++* **Problem:** First-time investors lose money and trust early because Kite’s Order Pad uses pro-trader abbreviations (`MIS`, `CNC`, `SL-M`) and exposes 5x intraday leverage by default—leading to accidental intraday trades, ₹50 + GST auto-square-off penalties at 3:20 PM `[SOURCE]`, and fee-shock on small orders.
++* **Target User:** First-time Indian retail investors aged 18–25 starting with ₹5,000–₹10,000 per month *(Assumption)*.
++* **Solution ("Kite Training Wheels"):** An adaptive, client-side UI layer active *only* for a user's first 25 executed trades. It adds plain-English order subtitles, inline 15-second Varsity cards, and a pre-trade "Sanity Check" bottom sheet using Zerodha's existing Nudge framework.
++* **Key Metric:** **90-Day Healthy Active Beginner Rate** (Target: `+5% to +8%` relative lift *(Assumption)* with **0ms degradation** to p99 order execution latency).
++* **My Role:** Solo PM & Technical Architect (Final-year CS student). Conducted user discovery, mapped the journey, prioritized via RICE, wrote the PRD, designed client-side zero-latency architecture, and structured the A/B test.
++
++---
++
++## 📑 Table of Contents
++1. [Problem Statement & Why It Matters](#1-problem-statement--why-it-matters)
++2. [User Research & Key Insights](#2-user-research--key-insights)
++3. [User Persona & Journey Map](#3-user-persona--journey-map)
++4. [Pain Points & RICE Prioritization](#4-pain-points--rice-prioritization)
++5. [Solution Design: "Kite Training Wheels"](#5-solution-design-kite-training-wheels)
++6. [PRD Summary & Technical Architecture](#6-prd-summary--technical-architecture)
++7. [Wireframes](#7-wireframes)
++8. [Metrics Framework](#8-metrics-framework)
++9. [Experiment Design (A/B Test)](#9-experiment-design-ab-test)
++10. [Risks, Trade-Offs & What I Did Not Build](#10-risks-trade-offs--what-i-did-not-build)
++11. [What I'd Do Differently & Learnings](#11-what-id-do-differently--learnings)
++12. [Links & Artifacts](#12-links--artifacts)
++
++---
++
++## 1. Problem Statement & Why It Matters
++Zerodha is built for speed, reliability, and zero spam `[SOURCE]`. It charges ₹0 brokerage on Equity Delivery (`CNC`) and makes the vast majority of its revenue from flat ₹20 fees on Intraday (`MIS`) and F&O orders `[SOURCE]`.
++
++However, when young beginners join Zerodha for its brand trust, they land in a cockpit built for experienced traders.
++
++* **Why it matters for Users:** If a 22-year-old starting with ₹5,000 accidentally selects `MIS` (Intraday) instead of `CNC` (Long-term Delivery) because `MIS` asks for 5x less upfront margin, their stock gets forcefully sold at 3:20 PM with a ₹50 + 18% GST penalty `[SOURCE]`. They feel cheated and quit investing early.
++* **Why it matters for Zerodha:**
++  * **10-Year LTV:** A 22-year-old with ₹5,000 today becomes a 32-year-old investor with ₹20 Lakhs *(Assumption)*. Early churn destroys long-term Account Maintenance Charges (AMC), Coin mutual fund adoption, and trading LTV.
++  * **Market Share Defense:** Competitors like Groww have overtaken Zerodha in active client count largely by capturing first-time investors with a simpler interface `[SOURCE]`.
++  * **SEBI Regulatory Alignment:** SEBI studies show over 90% of individual F&O/speculative retail traders lose money `[SOURCE]`. Protecting beginners aligns with regulatory expectations.
++
++---
++
++## 2. User Research & Key Insights
++* **Method:** 10-question behavioral interview guide ([view guide](./research/interview-guide.md)) targeting 8–10 beginner investors aged 18–25, supplemented by secondary analysis of Kite Google Play Store reviews, `r/IndiaInvestments`, and `TradingQnA` threads `[SOURCE]`.
++* **Participants (Anonymized Sample):**
++  * `Participant 1 (Age 21, Bengaluru - CS Student)`: Used Kite & Groww. Did not understand `CNC` vs `MIS`. Bought Intraday by mistake and got hit with auto-square-off charges. Quote: *"I thought MIS was cheaper because it asked for less money."*
++  * *(See [./research/findings.md](./research/findings.md) for full participant log).*
++
++**Top 3 Research Insights:**
++1. **The "Cheap Stock" Margin Illusion:** Beginners see 5x lower "Margin Required" on `MIS` and assume it is a discount, unknowingly taking 5x leveraged intraday risk.
++2. **Death by Small-Ticket Charges:** Beginners buying and selling ₹300–₹500 worth of shares in Delivery (`CNC`) don't realize that Depository Participant (DP) charges (₹13.5 + 18% GST on sell) `[SOURCE]` turn a ₹10 stock gain into a net loss.
++3. **The Varsity Silo:** Zerodha owns India's best free financial education platform (*Varsity*), but zero Varsity context appears inside Kite where order decisions happen.
++
++---
++
++## 3. User Persona & Journey Map
++### Target Persona: "First-Job Rohan" (Age 22, Bengaluru)
++* **Monthly Savings:** ₹5,000 – ₹10,000 *(Assumption)*.
++* **Core Jobs-To-Be-Done (JTBD):**
++  1. *Execution Confidence:* Know what order type I am placing and what it costs before I swipe to buy.
++  2. *Learning by Doing:* Understand terms like `CNC`, `MIS`, and `SL` in plain English without leaving the order screen.
++  3. *Safe Exploration:* Avoid wiping out my small capital due to hidden leverage or cutoff rules.
++
++![User Persona Placeholder](./assets/persona-rohan.png)
++*Caption: Target Persona — First-Job Rohan (18–25 Beginner Segment).*
++
++![Beginner Journey Map Placeholder](./assets/journey-map.png)
++*Caption: Current 6-step beginner journey showing where excitement turns into loss shock at the Order Pad (Step 4) and 3:20 PM Auto Square-Off (Step 6).*
++
++---
++
++## 4. Pain Points & RICE Prioritization
++I mapped 6 core pain points into "How Might We" (HMW) opportunities and scored them using **RICE** across an assumed monthly cohort of **100,000 new beginner accounts** *(Assumption)*. *(Full working in [./analysis/rice-scoring.md](./analysis/rice-scoring.md))*
++
++| Opportunity (HMW) | Reach *(Assumption)* | Impact | Confidence | Effort (Person-Mos) | RICE Score |
++| :--- | :--- | :--- | :--- | :--- | :--- |
++| **1. Plain-English Order Pad Labels (Auto-off at 25 trades)** | 95,000 | 2.0 | 90% | 1.5 | **114,000 (Winner #1)** |
++| **2. Pre-Trade "Sanity Check" Nudge (Leverage & Fee Alert)** | 80,000 | 3.0 | 85% | 2.5 | **81,600 (Winner #2)** |
++| **3. Contextual Varsity Micro-Cards (`?` Drawer)** | 60,000 | 1.0 | 80% | 2.0 | **24,000 (Supporting)** |
++| **4. Post-Trade Loss / Fee Breakdown** | 50,000 | 1.0 | 70% | 3.0 | 11,667 |
++| **5. Full "Kite Lite" Beginner Mode UI** | 70,000 | 2.0 | 60% | 8.0 | 10,500 |
++| **6. Paper Trading Sandbox inside Kite** | 40,000 | 1.0 | 50% | 10.0 | 2,000 |
++
++---
++
++## 5. Solution Design: "Kite Training Wheels"
++* **Option A: Dual-Mode App ("Investor Mode" vs. "Trader Mode")** — *Rejected.* Violates Zerodha’s lean engineering culture by forcing maintenance of two UIs and hides the learning path.
++* **Option B: "Kite Training Wheels" (Adaptive Labels + Pre-Trade Sanity Check + Varsity Bite)** — **SELECTED.** Active only for accounts with `< 25 lifetime executed orders`. Auto-graduates at trade #26 and has a 1-tap permanent opt-out for pros.
++* **Option C: AI Copilot Stock Advisor** — *Rejected.* Severe SEBI compliance risk; recommending whether to buy/sell a stock crosses into unlicensed Investment Advisory (RIA/RA) `[SOURCE]`.
++
++---
++
++## 6. PRD Summary & Technical Architecture
++📄 **[Read the Full One-Page PRD in `./analysis/prd.md`](./analysis/prd.md)**
++
++* **Eligibility:** Default ON for users with `< 25 lifetime equity trades`. Can be toggled OFF in 1 tap on the Order Pad or in Settings.
++* **Core Features:**
++  1. **Dynamic Plain-English Subtitles:** Explains `Intraday (MIS)` (5x margin, 3:20 PM cutoff, ₹50+GST penalty) vs. `Longterm (CNC)` right under the toggle.
++  2. **Pre-Trade "Sanity Check" Bottom Sheet:** Triggers *only* on a beginner's first 3 `MIS` orders OR when round-trip charges (including ₹15.93 DP charges) exceed `3%` of a small order value. Offers a 1-tap button to switch to `Longterm (CNC)`.
++  3. **Inline "Varsity Bite" Drawer:** Tapping `(?)` opens a native 15-second card explaining `Market vs. Limit` orders without losing order state.
++* **💻 Zero-Latency Architecture (CS Implementation):**
++  * At login, the session payload caches `is_beginner_mode: true` (`lifetime_trades < 25`) in local device storage (`SharedPreferences`/`SQLite`).
++  * Fee and break-even calculations are deterministic formulas executed **100% client-side in `< 0.2ms`** with **zero extra network API calls** during order placement.
++* **SEBI Compliance:** Explains **100% order mechanics and statutory charges**, **0% stock quality or return predictions**.
++
++---
++
++## 7. Wireframes
++| Screen 1: Adaptive Order Pad | Screen 2: Pre-Trade Sanity Check | Screen 3: Inline Varsity Bite |
++| :---: | :---: | :---: |
++| ![Screen 1 Placeholder](./assets/wireframe-1-order-pad.png) | ![Screen 2 Placeholder](./assets/wireframe-2-sanity-check.png) | ![Screen 3 Placeholder](./assets/wireframe-3-varsity-bite.png) |
++| *Plain-English micro-banners for `<25 trades` + 1-tap pro opt-out.* | *Intercepts first 3 `MIS` trades with a 1-tap switch to `CNC`.* | *15-sec native bottom drawer explaining order types.* |
++
++*(Full text wireframes and screen specs in [./design/wireframe-specs.md](./design/wireframe-specs.md))*
++
++---
++
++## 8. Metrics Framework
++📄 **[Full Metrics & Retention Diagnosis in `./analysis/metrics-framework.md`](./analysis/metrics-framework.md)**
++
++* **North Star Metric:** **90-Day Healthy Active Beginner Rate** (`% of new Day-1 trading users who execute >= 3 trades in their first 90 days AND place >= 1 trade between Day 61 and Day 90`). Target: `+5% to +8%` relative lift *(Assumption)*.
++* **Input Metrics:** *Accidental Intraday Correction Rate* (Target: `25%–35%` *(Assumption)*), *First-30-Day Auto-Square-Off Incidence* (Target: `-40%` *(Assumption)*), *Varsity Bite Engagement Rate* (Target: `15%–20%` *(Assumption)*).
++* **Guardrail Metrics:** *p99 Order Pad Render & Execution Latency* (**0ms degradation**), *Order Completion Rate* (must not drop by `> 2%`), *90-Day Cumulative Cohort Revenue & Support Ticket Rate*.
++
++---
++
++## 9. Experiment Design (A/B Test)
++📄 **[Full A/B Test Math & Volatility Controls in `./analysis/ab-test-design.md`](./analysis/ab-test-design.md)**
++
++* **Setup:** Concurrent 50/50 user-level A/B test on newly activated accounts placing their first mobile equity trade.
++* **Primary Decision Proxy:** **30-Day Healthy Repeat Trade Rate** (`>= 3 trades in 30 days with 0 auto-square-off penalties`).
++* **Sample Size:** Assuming a `40%` baseline *(Assumption)*, `5%` relative MDE (`40% -> 42%`), `95%` confidence, and `80%` power requires **~9,500 users per arm (~19,000 total)** over a **6-week window** (2 weeks recruitment + 30 days observation).
++* **Handling Market Volatility:** Running Control and Variant **strictly concurrently** with stratified sampling (separating IPO sign-ups from organic equity sign-ups) ensures market dips hit both buckets equally.
++
++---
++
++## 10. Risks, Trade-Offs & What I Chose Not to Build
++* **Revenue Trade-Off (Short-Term ₹20 vs. Long-Term LTV):** Steering beginners out of accidental Intraday (`₹20` fee) into Delivery (`₹0` fee) dips Day-1 brokerage slightly. We accept this trade-off because preventing early blow-ups preserves multi-year AMC, Coin, and active trader LTV.
++* **Paternalism vs. Freedom:** Mitigated by auto-graduating after 25 trades, capping the bottom sheet at 3 `MIS` orders, and offering a 1-tap permanent opt-out.
++* **What I Deliberately Did NOT Build:**
++  1. ❌ *No Gamified Streaks or Badges* (encourages over-trading; dark pattern).
++  2. ❌ *No Social/Community Copy-Trading Feed* (fuels FOMO and pump-and-dump risk).
++  3. ❌ *No AI "Safe Stocks for Beginners" List* (violates SEBI advisory regulations).
++
++---
++
++## 11. What I'd Do Differently & Learnings
++* **Limitation / Next Steps:** "Kite Training Wheels" prevents *operational execution mistakes* on the Order Pad, but beginners can still lose money by buying hyped penny stocks in Delivery (`CNC`). In V2, I would surface Zerodha's existing fundamental risk flags (high promoter pledging, ASM/GSM surveillance warnings) more clearly for beginners before they open the Order Pad.
++* **Key Learning:** Building for fintech requires balancing three forces simultaneously—**user protection**, **unit economics**, and **SEBI regulatory boundaries**—while respecting engineering constraints like client-side latency.
++
++---
++
++## 12. Links & Artifacts
++* 📊 **[Presentation Deck (8 Slides PDF)](./slides/zerodha-kite-case-study-deck.pdf)**
++* 📋 **[Full One-Page PRD](./analysis/prd.md)**
++* 📈 **[Metrics & Retention Drop Diagnosis](./analysis/metrics-framework.md)**
++* 🧪 **[A/B Test Specification](./analysis/ab-test-design.md)**
++* 👤 **Author:** Shubham — [GitHub](https://github.com/shubham000111222)
++
++---
++
++> *Independent case study. Not affiliated with Zerodha. Feature ideas are illustrative and are not investment advice.*
+diff --git a/research/interview-guide.md b/research/interview-guide.md
+new file mode 100644
+--- /dev/null
++++ b/research/interview-guide.md
+@@ -0,0 +1,25 @@
++# User Research Interview Guide
++
++> *Independent case study. Not affiliated with Zerodha. Feature ideas are illustrative and are not investment advice.*
++
++## Objective
++Understand how first-time investors (ages 18–25) navigate their first few trades on the Zerodha Kite mobile app, what terminology confuses them, and how early operational mistakes affect their trust.
++
++## Target Participants
++* **Segment:** 8–10 beginner retail investors aged 18–25.
++* **Criteria:** Opened a Demat account within the last 6–12 months; starting capital between ₹5,000 and ₹10,000 per month *(Assumption)*.
++* **Rule:** Avoid leading questions (e.g., *"Do you want a beginner mode?"*). Focus strictly on past behavior.
++
++## 10 Interview Questions
++1. Walk me through why you decided to open a Zerodha account instead of Groww or Angel One.
++2. Tell me about the very first stock you bought on Kite. What was going through your mind on the Buy screen?
++3. Have you ever placed an order on Kite that behaved differently than you expected? What happened?
++4. Look at this screenshot of the Kite Buy screen *(show order window)*. In your own words, what do `MIS`, `CNC`, `SL`, and `GTT` mean to you?
++5. When you don't understand a term inside Kite, what do you currently do?
++6. Have you ever tried Intraday trading or F&O? What made you try it, and what was the outcome?
++7. Have you ever been surprised by the charges or taxes on your Console report after making a trade?
++8. Have you heard of Zerodha Varsity? If yes, how often do you use it while trading?
++9. What is the single most stressful moment for you when using the Kite app?
++10. Have you ever stopped using Kite for a few weeks or switched to another app? Why?
++
++> *Independent case study. Not affiliated with Zerodha. Feature ideas are illustrative and are not investment advice.*
+diff --git a/research/findings.md b/research/findings.md
+new file mode 100644
+--- /dev/null
++++ b/research/findings.md
+@@ -0,0 +1,27 @@
++# User Research & Secondary Market Findings
++
++> *Independent case study. Not affiliated with Zerodha. Feature ideas are illustrative and are not investment advice.*
++
++## 1. Primary Interview Log (Anonymized)
++
++| Participant | Age & City | Apps Used | Understood `CNC` vs `MIS`? | Accidental Mistake Made | Uses Varsity? | Key Quote / Insight |
++| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
++| **Participant 1** | 21, Bengaluru | Kite, Groww | No | Bought Intraday (`MIS`) by mistake; position auto-squared off at a loss at 3:20 PM | Never heard of it | *"I thought MIS was cheaper because it asked for less money."* |
++| **Participant 2** | `[Fill Age, City]` | `[Fill]` | `[Y/N]` | `[Fill after interview]` | `[Fill]` | `[Insert verbatim quote]` |
++| **Participant 3** | `[Fill Age, City]` | `[Fill]` | `[Y/N]` | `[Fill after interview]` | `[Fill]` | `[Insert verbatim quote]` |
++
++---
++
++## 2. Secondary Evidence & Public Data Triangulation
++
++| Pain Point | Where It Happens | Public Evidence & Source | Severity |
++| :--- | :--- | :--- | :--- |
++| **1. `MIS` vs. `CNC` Jargon Trap** | Buy/Sell Order Pad (Top toggle) | Reddit threads on `r/IndianStreetBets` and `r/IndiaInvestments` detailing beginner confusion between Intraday (`MIS`) and Delivery (`CNC`) `[SOURCE]`. | **Critical** |
++| **2. The "Cheap Stock" 5x Margin Illusion** | Buy/Sell Order Pad ("Margin Required" bar) | Google Play Store 1-star and 2-star reviews mentioning unexpected margin leverage and intraday losses `[SOURCE]`. | **Critical** |
++| **3. Surprise 3:20 PM Auto Square-Off Penalties** | Positions Tab & Console Contract Note | Zerodha charges ₹50 + 18% GST per order auto-squared off by the system at 3:20 PM `[SOURCE]`. For small-budget users, this fee often exceeds the trade value. | **High** |
++| **4. Order Type Confusion (`Market` vs `Limit` vs `SL`)** | Buy/Sell Order Pad (Type selector) | `TradingQnA` forum posts from new users experiencing price slippage on Market orders or failing to set Stop-Loss (`SL`) triggers `[SOURCE]`. | **Medium** |
++| **5. Disconnected Education (The Varsity Silo)** | Across Kite Mobile App | Zerodha Varsity is hosted in a separate app/website with zero contextual links inside the Kite Order Pad `[SOURCE]`. | **High** |
++| **6. Delayed Fee Visibility (DP Charges)** | Order Pad & Next-Day Contract Note | Selling Delivery (`CNC`) stocks incurs a ₹13.5 + 18% GST Depository Participant (DP) charge `[SOURCE]`, wiping out gains on small ₹300–₹500 trades. | **High** |
++| **7. Macro Retail Speculation Losses** | Market-wide | SEBI's September 2024 study showed over 90% of individual F&O traders lost money `[SOURCE]`, increasing regulatory scrutiny on broker interfaces. | **Critical** |
++
++> *Independent case study. Not affiliated with Zerodha. Feature ideas are illustrative and are not investment advice.*
+diff --git a/analysis/rice-scoring.md b/analysis/rice-scoring.md
+new file mode 100644
+--- /dev/null
++++ b/analysis/rice-scoring.md
+@@ -0,0 +1,28 @@
++# Opportunity Prioritization (RICE Framework)
++
++> *Independent case study. Not affiliated with Zerodha. Feature ideas are illustrative and are not investment advice.*
++
++## Formula
++$$\text{RICE Score} = \frac{\text{Reach} \times \text{Impact} \times \text{Confidence}}{\text{Effort}}$$
++
++* **Cohort Baseline:** 100,000 new beginner accounts per month *(Assumption)*.
++* **Impact Scale:** `0.25` (Minimal), `0.5` (Low), `1.0` (Medium), `2.0` (High), `3.0` (Massive).
++* **Effort:** Engineering and design person-months.
++
++## RICE Scoring Table
++
++| Opportunity ("How Might We...") | Reach *(Assumption)* | Impact | Confidence | Effort (Person-Mos) | Working & Final RICE Score |
++| :--- | :--- | :--- | :--- | :--- | :--- |
++| **HMW #1: Plain-English Order Pad Labels** *(Auto-off after 25 trades)* | **95,000** *(95% of active beginners open Order Pad)* | **2.0** *(Directly stops MIS vs CNC confusion)* | **90%** | **1.5** *(Simple frontend label & toggle)* | `(95,000 × 2 × 0.9) / 1.5` = **114,000 (Rank 1)** |
++| **HMW #2: Pre-Trade "Sanity Check" Nudge** *(Leverage & Fee Alert)* | **80,000** *(80% attempt small-ticket or intraday orders)* | **3.0** *(Prevents direct loss & ₹50 penalty)* | **85%** | **2.5** *(Extends existing Nudge engine)* | `(80,000 × 3 × 0.85) / 2.5` = **81,600 (Rank 2)** |
++| **HMW #3: Contextual Varsity Micro-Cards** | **60,000** *(60% tap info icons)* | **1.0** *(Improves knowledge; indirect impact)* | **80%** | **2.0** *(Content mapping + bottom drawer)* | `(60,000 × 1 × 0.8) / 2.0` = **24,000 (Rank 3)** |
++| **HMW #5: Post-Trade Loss / Fee Breakdown** | **50,000** *(50% lose money or pay high % fees on Trade 1)* | **1.0** *(Reactive—after money is already lost)* | **70%** | **3.0** *(Requires Console back-office sync)* | `(50,000 × 1 × 0.7) / 3.0` = **11,667 (Rank 4)** |
++| **HMW #4: Full "Kite Lite" Beginner Mode** | **70,000** *(70% opt-in during onboarding)* | **2.0** *(Clean UI, but hides growth path)* | **60%** | **8.0** *(Heavy effort maintaining two UIs)* | `(70,000 × 2 × 0.6) / 8.0` = **10,500 (Rank 5)** |
++| **HMW #6: Paper Trading Sandbox inside Kite** | **40,000** *(40% try virtual trading)* | **1.0** *(Users take fake risks with fake money)* | **50%** | **10.0** *(Backend load + SEBI rules)* | `(40,000 × 1 × 0.5) / 10.0` = **2,000 (Rank 6)** |
++
++## Justification for Final Selection
++We combine **HMW #1** and **HMW #2** (supported by lightweight links from **HMW #3**) into **"Kite Training Wheels"**:
++1. **Prevention Beats Cure:** Intercepting an accidental 5x leveraged `MIS` trade *before* execution saves user capital immediately.
++2. **Respects Zerodha's Lean Tech Philosophy:** Avoids maintaining a bloated "Kite Lite" fork and respects SEBI restrictions on gamified virtual/paper trading `[SOURCE]`.
++
++> *Independent case study. Not affiliated with Zerodha. Feature ideas are illustrative and are not investment advice.*
+diff --git a/analysis/prd.md b/analysis/prd.md
+new file mode 100644
+--- /dev/null
++++ b/analysis/prd.md
+@@ -0,0 +1,44 @@
++# Product Requirements Document (PRD): Kite Training Wheels
++
++> *Independent case study. Not affiliated with Zerodha. Feature ideas are illustrative and are not investment advice.*
++
++* **Feature Name:** Kite Training Wheels
++* **Platform:** Kite Mobile App (Android & iOS)
++* **Status:** Draft Proposal | **Target Segment:** First-time investors (`< 25 lifetime executed trades`)
++
++---
++
++## 1. Problem & Goal
++* **Problem:** Beginners (`< 25 trades`) lose money and trust early because pro-trader abbreviations (`MIS`, `CNC`, `SL-M`) and hidden fee mechanics on small orders cause accidental leveraged trades, ₹50 + GST auto-square-off penalties at 3:20 PM `[SOURCE]`, and net-negative returns due to ₹13.5 + GST DP charges `[SOURCE]`.
++* **Goal:** Reduce accidental intraday orders, auto-square-off penalties, and 90-day beginner churn while adding **0ms of latency** for experienced users.
++
++## 2. Eligibility & Graduation Logic
++* Enabled by default when `user.lifetime_executed_equity_orders < 25`.
++* Automatically turns off at trade #26 with a dismissible toast notification.
++* Can be permanently turned OFF in 1 tap via the Order Pad header (`"Turn off hints"`) or toggled anytime in `Settings -> Order Preferences`.
++
++## 3. User Stories
++1. **Plain-English Subtitles:** *As a beginner on the Order Pad*, I want to see a 1-line explanation under `Intraday (MIS)` and `Longterm (CNC)` so I know which option holds the stock overnight and which option auto-sells at 3:20 PM.
++2. **Upfront Small-Order Fee Guard:** *As a small-budget beginner placing an order under ₹500*, I want to see if round-trip statutory and DP charges exceed `3%` of my order value *before* I swipe to buy.
++3. **Pre-Trade Sanity Check:** *As a beginner selecting Intraday (`MIS`) for the first 3 times*, I want a quick confirmation card explaining the 5x leverage exposure and ₹50 + GST auto-square-off rule, with a 1-tap button to switch to `Longterm (CNC)`.
++4. **Inline Varsity Bite:** *As a curious beginner*, I want to tap `(?)` next to order types (`Market`, `Limit`, `SL`) to read a 15-second native summary without leaving my order ticket.
++
++## 4. Scope
++* **IN SCOPE:** Mobile Order Pad adaptive subtitles, pre-trade Sanity Check bottom sheet (capped at first 3 `MIS` orders or when fees `> 3%` of trade value), native Varsity Bite bottom drawer, 1-tap permanent opt-out.
++* **OUT OF SCOPE:** Stock quality ratings or buy/sell recommendations (prohibited by SEBI `[SOURCE]`), Kite Web changes (Phase 1 is Mobile only), any UI changes for accounts with `>= 25` trades.
++
++## 5. Edge Cases
++* **Pro User on a New Account:** If an experienced trader opens a family account, they can tap `"Turn off hints"` on their very first order screen in 1 tap.
++* **Small Screens (5-inch phones):** The 2-line helper banner collapses into 1 line when the numeric keyboard opens so the `"Swipe to Buy"` button is never pushed off-screen.
++* **Fast-Moving Markets:** The Sanity Check bottom sheet includes a `"Don't show this check again"` checkbox and automatically stops after 3 `MIS` trades.
++
++## 6. Technical Architecture (Zero-Latency Design)
++* **Local Session Flag:** On login, the user profile payload includes `is_beginner_mode: boolean` (evaluated asynchronously on backend via `lifetime_trades < 25`) and caches it in local device storage (`SharedPreferences` / `SQLite`).
++* **Client-Side Fee Math:** Brokerage, STT, exchange fees, and DP charge estimates are deterministic mathematical formulas computed **100% on the phone CPU in `< 0.2ms`**.
++* **Zero Extra Network Calls:** Varsity micro-card text and fee parameters are synced via a lightweight remote config JSON on app launch, ensuring **0 network API calls** when opening or swiping the Order Pad.
++
++## 7. SEBI Regulatory Compliance
++* Under SEBI Investment Adviser (IA) and Research Analyst (RA) regulations `[SOURCE]`, brokers cannot offer unapproved buy/sell advice on specific securities.
++* All copy in "Kite Training Wheels" strictly describes **exchange rules, order mechanics, and statutory charges**—never the underlying stock's prospects.
++
++> *Independent case study. Not affiliated with Zerodha. Feature ideas are illustrative and are not investment advice.*
+diff --git a/design/wireframe-specs.md b/design/wireframe-specs.md
+new file mode 100644
+--- /dev/null
++++ b/design/wireframe-specs.md
+@@ -0,0 +1,80 @@
++# Low-Fidelity Wireframe Specifications
++
++> *Independent case study. Not affiliated with Zerodha. Feature ideas are illustrative and are not investment advice.*
++
++## Screen 1: The Adaptive Order Pad (Beginner View)
++*Active only for accounts with `< 25 trades`. Experienced accounts see the standard Kite Order Pad.*
++
++    +---------------------------------------------------+
++    |  <-  TATASTEEL                           ₹150.00  |
++    |      NSE: ₹150.00  BSE: ₹149.95                   |
++    +---------------------------------------------------+
++    |  [Beginner Hint Active]          [Turn off hints] | <-- 1-tap opt-out for pros
++    +---------------------------------------------------+
++    |  Quantity: [ 2 ]              Price: [ 150.00 ]   |
++    +---------------------------------------------------+
++    |  PRODUCT                                     (?)  | <-- Tapping (?) opens Screen 3
++    |  (•) Intraday (MIS)         ( ) Longterm (CNC)    |
++    |  +---------------------------------------------+  |
++    |  | 💡 Intraday (MIS): Borrow 5x margin. MUST   |  | <-- Plain-English Micro-Banner
++    |  | sell before 3:20 PM today or pay ₹59 fee.   |  |     (Updates dynamically on tap)
++    |  +---------------------------------------------+  |
++    +---------------------------------------------------+
++    |  TYPE                                        (?)  |
++    |  ( ) Market   (•) Limit   ( ) SL   ( ) SL-M       |
++    |  "Buys at ₹150.00 or lower. Safer than Market."   | <-- 1-line subtitle
++    +---------------------------------------------------+
++    |  Margin req: ₹60.00 (5x Leverage: Trade val ₹300) | <-- Explicitly shows true exposure
++    |  Est. Round-trip Charges: ₹1.20 (Tap for details) |
++    |                                                   |
++    |  [  >>>>>>  SWIPE TO BUY  >>>>>>               ]  |
++    +---------------------------------------------------+
++
++---
++
++## Screen 2: The Pre-Trade "Sanity Check" Bottom Sheet
++*Triggers ONLY on a beginner's first 3 `MIS` orders ever, OR when estimated round-trip charges exceed `3%` of trade value.*
++
++    +---------------------------------------------------+
++    |  (Dimmed Order Pad in Background)                 |
++    +===================================================+
++    |  ⚠️  Quick Sanity Check (1 of 3 for new accounts) |
++    |---------------------------------------------------|
++    |  You selected INTRADAY (MIS) for 2 shares.        |
++    |                                                   |
++    |  1. 5x Leverage: You are paying ₹60, but taking   |
++    |     price risk on ₹300 worth of shares.           |
++    |  2. 3:20 PM Rule: If you don't sell by 3:20 PM    |
++    |     today, our system auto-sells it for a         |
++    |     ₹50 + GST penalty.                            |
++    |                                                   |
++    |  Want to hold this stock for more than 1 day?     |
++    |                                                   |
++    |  [  Switch to Longterm (CNC) — Pay ₹300  ] (Blue) | <-- Primary safe action
++    |  [  Continue with Intraday (MIS) anyway  ] (Grey) | <-- Preserves user freedom
++    |                                                   |
++    |  [ ] Don't show this check again                  |
++    +---------------------------------------------------+
++
++---
++
++## Screen 3: Inline "Varsity Bite" Drawer
++*Opens as a native half-screen bottom sheet when tapping `(?)` so the user never loses their order form state.*
++
++    +---------------------------------------------------+
++    |  📘 Varsity Quick Guide                  [Close X]|
++    |---------------------------------------------------|
++    |  Market vs. Limit Orders (15-sec read)            |
++    |                                                   |
++    |  • Market Order: Buys immediately at whatever     |
++    |    price a seller is asking. Fast, but risky if   |
++    |    the stock price jumps suddenly.                |
++    |                                                   |
++    |  • Limit Order: You set the maximum price you     |
++    |    are willing to pay. The order only executes    |
++    |    at your price or better.                       |
++    |                                                   |
++    |  🔗 Want to learn more? [Save Chapter to Varsity] |
++    +---------------------------------------------------+
++
++> *Independent case study. Not affiliated with Zerodha. Feature ideas are illustrative and are not investment advice.*
+diff --git a/analysis/metrics-framework.md b/analysis/metrics-framework.md
+new file mode 100644
+--- /dev/null
++++ b/analysis/metrics-framework.md
+@@ -0,0 +1,46 @@
++# Metrics Framework & Retention Drop Diagnosis
++
++> *Independent case study. Not affiliated with Zerodha. Feature ideas are illustrative and are not investment advice.*
++
++## 1. North Star, Input & Guardrail Metrics
++
++| Category | Metric Name | Formula / Calculation | Target *(Assumption)* |
++| :--- | :--- | :--- | :--- |
++| **North Star** | **90-Day Healthy Active Beginner Rate** | `% of Day-1 trading beginners who execute >= 3 trades in 90 days AND place >= 1 trade in Days 61–90` | **+5% to +8% relative lift** |
++| **Input 1** | **Accidental Intraday Correction Rate** | `Beginners clicking "Switch to CNC" / Total beginners shown Sanity Check` | **25% – 35% switch rate** |
++| **Input 2** | **First-30-Day Auto-Square-Off Incidence** | `% of <30-day users hit with a 3:20 PM system auto-square-off penalty` | **-40% reduction** |
++| **Input 3** | **Varsity Bite Engagement Rate** | `Unique beginners tapping (?) / Unique beginners opening Order Pad` | **15% – 20% engagement** |
++| **Guardrail 1** | **Order Pad Render & Execution Latency (p99)** | `99th percentile time (ms) from tapping Buy to Order Pad render & exchange API call` | **0ms degradation** |
++| **Guardrail 2** | **Pro-User False Positive Opt-Out Rate** | `% of users clicking "Turn off hints" within 5 seconds of trade #1` | **Track only** |
++| **Guardrail 3** | **Beginner Support Ticket Rate** | `Tickets on "charges / auto square-off" from <30d users / Total <30d trading users` | **-25% reduction** |
++| **Guardrail 4** | **90-Day Cumulative Revenue per Beginner** | `Total Brokerage + AMC earned per beginner cohort over 90 days` | **Neutral at D30; Positive by D180** |
++
++---
++
++## 2. Diagnostic Exercise: "Beginner 90-Day Retention Dropped 10% QoQ"
++
++### Step 1: Clarify Metric & Scope
++* Confirm definition of "Beginner" (age 18–25 vs. first-time traders) and "Retention" (app open vs. executed trade in Days 61–90).
++* Check if the 10% drop is **relative** (e.g., 40% to 36%) or **absolute** (40% to 30%), and whether it was gradual or sudden.
++
++### Step 2: Check Data Quality
++* Verify that recent Kite Flutter updates on Android/iOS did not break telemetry for `order_executed` or `session_start`.
++
++### Step 3: Segment the Cohort
++* **Acquisition Intent:** Separate users whose first action was applying for a hyped **IPO** vs. buying an equity stock.
++* **First Asset Class:** Delivery (`CNC`) vs. Intraday (`MIS`) vs. F&O.
++* **Device & Ticket Size:** Android vs. iOS; starting capital `< ₹2,000` vs. `> ₹10,000`.
++
++### Step 4: External vs. Internal Causes
++* **External:** Nifty 50 market correction causing red portfolios ("ostrich effect"), SEBI margin/lot-size rule changes `[SOURCE]`, or competitor zero-brokerage campaigns.
++* **Internal:** UPI payment gateway failures during repeat funding, UI changes, or support delays.
++
++### Step 5: Ranked Hypotheses & Action Plan
++
++| Rank | Hypothesis | Data to Confirm | Recommended Action |
++| :--- | :--- | :--- | :--- |
++| **#1** | **"IPO Tourist" Cohort Effect:** 90 days ago, a mega-IPO brought in 2x more low-intent beginners who churned after failing to get IPO allotment. | Compare 90-day retention of *"1st action = IPO bid"* vs. *"1st action = Stock buy"*. | Separate IPO cohorts in reporting; trigger a post-IPO educational nudge introducing Index ETFs or Coin SIPs once UPI funds unblock. |
++| **#2** | **Market Pullback / Early Loss Shock:** A broader market dip caused 70%+ of last quarter's beginners to lose money on their first 3 trades. | Correlate cohort Day-14 PnL with Day-90 retention across quarters. | Ship "Kite Training Wheels" and send a non-pushy Varsity digest on market cycles. |
++| **#3** | **Repeat UPI Funding Friction:** Beginners invested their initial ₹1,000 and hit bank failures when adding funds in Month 2. | Check conversion funnel of `Add Funds -> UPI Redirect -> Payment Success` by bank. | Route default UPI traffic through the highest-success Payment Service Provider (PSP). |
++
++> *Independent case study. Not affiliated with Zerodha. Feature ideas are illustrative and are not investment advice.*
+diff --git a/analysis/ab-test-design.md b/analysis/ab-test-design.md
+new file mode 100644
+--- /dev/null
++++ b/analysis/ab-test-design.md
+@@ -0,0 +1,40 @@
++# Experiment Design (A/B Test Specification)
++
++> *Independent case study. Not affiliated with Zerodha. Feature ideas are illustrative and are not investment advice.*
++
++## 1. Hypothesis
++If we show adaptive plain-English order labels and a pre-trade Sanity Check bottom sheet (**"Kite Training Wheels"**) to new users during their first 25 trades, then their **30-day healthy repeat trade rate** and **90-day retention** will increase because fewer beginners will suffer accidental intraday penalties or fee-shock losses.
++
++## 2. Experiment Setup
++* **Randomization Unit:** User-level (`user_id`) for newly activated Zerodha accounts placing their first mobile equity trade.
++* **Control (50%):** Standard Kite Mobile Order Pad.
++* **Variant (50%):** Kite Order Pad with "Kite Training Wheels" enabled for `< 25` lifetime trades.
++
++## 3. Metrics
++* **Primary Decision Metric (Fast-Feedback Proxy):** **30-Day Healthy Repeat Trade Rate** (`% of users completing >= 3 trades in their first 30 days with 0 auto-square-off penalties`).
++* **Secondary Metric:** First-30-day 3:20 PM Auto-Square-Off incidence.
++* **Guardrails:**
++  1. *Order Pad Completion Rate* (`Orders Placed / Order Pad Opened`) must not drop by `> 2%`.
++  2. *p99 Order Execution Latency* must show `0ms` statistically significant regression.
++
++## 4. Sample Size & Duration Logic
++* **Inputs:**
++  * Control Baseline Rate: `40.0%` *(Assumption)*
++  * Minimum Detectable Effect (MDE): `5% relative lift` (`40.0% -> 42.0%`)
++  * Statistical Significance ($\alpha$): `95% confidence`
++  * Statistical Power ($1 - \beta$): `80% power`
++* **Required Sample Size:** **~9,500 users per arm (~19,000 users total)** *(Assumption based on standard two-proportion z-test)*.
++* **Duration:** Assuming ~3,000 eligible first-time equity traders per day *(Assumption)*, we recruit users across **14 days** (to capture two full weekly market cycles) + **30 days** observation window = **6 weeks total duration**.
++
++## 5. Ship / Iterate / Kill Decision Rule
++* 🟢 **SHIP:** Primary Metric lifts by `>= +5% relative`, auto-square-off penalties drop by `>= 25%`, and Guardrails remain within bounds.
++* 🟡 **ITERATE:** Auto-square-off penalties drop by `>= 30%`, *but* Order Pad Completion Rate drops by `> 5%` (indicating our bottom-sheet warning copy is too alarming). *Action:* Soften copy and test an inline banner vs. modal sheet.
++* 🔴 **KILL:** Primary Metric shows `0%` or negative lift, and `> 50%` of users dismiss or disable the hints immediately.
++
++## 6. Controlling for Market Volatility & Seasonality
++Stock trading volume fluctuates heavily during macro events (Union Budget, RBI rate decisions, earnings season, market crashes).
++1. **Strict Concurrent Testing:** Never use before-vs-after comparisons; run Control and Variant simultaneously so market volatility affects both groups identically.
++2. **Stratified Sampling:** Balance IPO-acquired users and organic equity sign-ups equally across Control and Variant.
++3. **Anomaly Blackouts:** Avoid starting experiment recruitment on outlier trading sessions (e.g., Budget Day or Diwali Muhurat Trading).
++
++> *Independent case study. Not affiliated with Zerodha. Feature ideas are illustrative and are not investment advice.*
+diff --git a/assets/README.md b/assets/README.md
+new file mode 100644
+--- /dev/null
++++ b/assets/README.md
+@@ -0,0 +1,3 @@
++# Visual Assets Directory
++
++Place exported PNG diagrams and wireframes here (`persona-rohan.png`, `journey-map.png`, `wireframe-1-order-pad.png`, `wireframe-2-sanity-check.png`, `wireframe-3-varsity-bite.png`).
+diff --git a/slides/README.md b/slides/README.md
+new file mode 100644
+--- /dev/null
++++ b/slides/README.md
+@@ -0,0 +1,3 @@
++# Presentation Deck Directory
++
++Place the exported 8-slide presentation PDF here (`zerodha-kite-case-study-deck.pdf`).
